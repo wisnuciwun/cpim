@@ -46,7 +46,8 @@ class Overview extends PureComponent {
         this.setState({
             company: {
                 ...newValues,
-                id: id
+                id: id,
+                // phone: `(${this.state.company.code}) ${this.state.company.phone}`
             }
         })
     }
@@ -115,7 +116,7 @@ class Overview extends PureComponent {
                     {
                         companies ?
                             companies.map((val, index) => {
-                                return (<MiniCard data={val} label={val.name} />)
+                                return (<MiniCard key={index} iteration={3} datavalue={[val.address, val.revenue, val.phone]} datalabel={["Address :","Revenue :","Phone No. :"]} label={val.name} />)
                             })
                             :
                             null
