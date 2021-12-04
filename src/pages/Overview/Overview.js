@@ -2,7 +2,7 @@ import React, { Component, PureComponent } from 'react'
 import { Card, CardGroup, Container, Form, Button, FormControl, FormLabel, FormGroup } from 'react-bootstrap'
 import CardHeader from 'react-bootstrap/esm/CardHeader'
 import CustomInput from '../../components/CustomInput/CustomInput'
-import { storeCompanies } from '../../config/redux/rootAction'
+import { storeCompanies, storeOffices } from '../../config/redux/rootAction'
 import { connect } from 'react-redux';
 import './style.sass'
 import { COMPANIES } from '../../config/redux/actionTypes'
@@ -11,9 +11,7 @@ import MiniCard from '../../components/MiniCard/MiniCard'
 class Overview extends PureComponent {
     constructor(props) {
         super(props)
-
         this.state = {
-            dataopt: [1, 2, 3],
             company: {
                 id: '',
                 name: '',
@@ -24,19 +22,37 @@ class Overview extends PureComponent {
             },
             office: {
                 id: '',
+                company: '',
                 name: '',
                 lat: '',
                 long: '',
                 date: '',
-                company: '',
             }
         }
+        this.initial = {...this.state}
 
         this.postData = this.postData.bind(this)
 
-
     }
 
+    onCleanState = (value) => {
+        let init = this.initial
+        switch (value) {
+            case "company":
+                this.setState({
+                    company: {...init.company}
+                })
+                break;
+            case "office":
+                this.setState({
+                    office: {...init.office}
+                })
+                break;
+        
+            default:
+                break;
+        }
+    }
 
     onChangeCompany = (e) => {
         let newValues = { ...this.state.company }
@@ -47,31 +63,46 @@ class Overview extends PureComponent {
             company: {
                 ...newValues,
                 id: id,
-                // phone: `(${this.state.company.code}) ${this.state.company.phone}`
             }
         })
     }
 
     onChangeOffice = (e) => {
         let newValues = { ...this.state.office }
+        let id = this.props.officeId
         newValues[e.target.name] = e.target.value
 
         this.setState({
-            office: newValues
+            office: {
+                ...newValues,
+                id: id
+            }
         })
     }
 
     postData(value) {
-        let { dispatch } = this.props
-        // let newValues = []
-        let newValues = [...this.props.companies, { ...this.state.company }]
-        dispatch(storeCompanies(newValues))
+    let { dispatch } = this.props
+
+        switch (value) {
+            case "company":
+            let newCompany = [...this.props.companies, { ...this.state.company }]
+            dispatch(storeCompanies(newCompany))
+            break;
+            
+            case "office":
+            let newOffice = [...this.props.offices, { ...this.state.office }]
+            dispatch(storeOffices(newOffice))
+            break;
+
+            default:
+                break;
+        }
+        this.onCleanState(value)
     }
 
     render() {
         let { company, office } = this.state
         let { companies } = this.props
-        console.log("props", this.props.location)
         return (
             <div>
                 <div className="d-flex justify-content-center">
@@ -89,7 +120,7 @@ class Overview extends PureComponent {
                                         <FormControl onChange={this.onChangeCompany} value={company.phone} name="phone" placeholder="number" className="w-75 margin-left" type="text" />
                                     </div>
                                 </FormGroup>
-                                <Button onClick={() => this.postData("company")} className="w-100">Create</Button>
+                                <Button onClick={(e) => this.postData("company")} className="w-100">Create</Button>
                             </Form>
                         </CardGroup>
                     </Card>
@@ -106,8 +137,8 @@ class Overview extends PureComponent {
                                     </div>
                                 </FormGroup>
                                 <CustomInput label="Office Start Date :" placeholder="enter your date here" />
-                                <CustomInput onChange={this.onChangeOffice} value={office.company} name="company" label="Company :" placeholder="select your company name here" type="select" options={this.state.dataopt} />
-                                <Button className="w-100">Create</Button>
+                                <CustomInput onChange={this.onChangeOffice} name="company" label="Company :" placeholder="select your company name here" type="select" options={companies} optionvariable="name" optionvalue="companyId" />
+                                <Button onClick={() => this.postData("office")} className="w-100">Create</Button>
                             </Form>
                         </CardGroup>
                     </Card>
@@ -116,7 +147,7 @@ class Overview extends PureComponent {
                     {
                         companies ?
                             companies.map((val, index) => {
-                                return (<MiniCard key={index} iteration={3} datavalue={[val.address, val.revenue, val.phone]} datalabel={["Address :","Revenue :","Phone No. :"]} label={val.name} />)
+                                return (<MiniCard key={index} iteration={3} datavalue={[val.address, val.revenue, val.phone]} datalabel={["Address :", "Revenue :", "Phone No. :"]} label={val.name} />)
                             })
                             :
                             null

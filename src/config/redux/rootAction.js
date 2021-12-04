@@ -6,3 +6,10 @@ export const storeCompanies = (data) => {
         data: data
     }
 }
+
+export const storeOffices = (data) => {
+    return{
+        type: actionTypes.OFFICES,
+        data: data
+    }
+}
