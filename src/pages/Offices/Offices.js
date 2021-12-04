@@ -10,7 +10,7 @@ import './style.sass'
 class Offices extends Component {
 
     deleteOffice = async (id) => {
-        let execute = await ConfirmHandling().then(res => res.isConfirmed)
+        let execute = await ConfirmHandling().then(res => res ? true : false)
 
         if (execute) {
             let { dispatch } = this.props
@@ -33,7 +33,7 @@ class Offices extends Component {
         }
 
         return (
-            <div className="cardu">
+            <div className="offices">
                 {
                     company ?
                         <div>
@@ -56,7 +56,7 @@ class Offices extends Component {
                             </div>
                         </div>
                         :
-                        <p>No data</p>
+                        <h1 className="center-all" ><i class="bi bi-door-open"></i> No data</h1>
                 }
 
             </div>

@@ -10,6 +10,8 @@ import DatePicker from 'react-datepicker'
 import SimpleReactValidator from 'simple-react-validator';
 import ValidatorText from '../../components/ValidatorText/ValidatorText'
 import { ConfirmHandling, ErrorHandling } from '../../components/Swal/Swal'
+import moment from 'moment'
+import { PHONE_CODE } from '../../constants/Constants'
 
 class Overview extends PureComponent {
     constructor(props) {
@@ -70,38 +72,55 @@ class Overview extends PureComponent {
         })
     }
 
-    onChangeOffice = (e) => {
-        let newValues = { ...this.state.office }
-        let id = this.props.c
-        newValues[e.target.name] = e.target.value
+    onChangeOffice = (e, v = "") => {
+        let id = this.props.officeId
 
-        this.setState({
-            office: {
-                ...newValues,
-                id: id
-            }
-        })
+        if (v == "Date") {
+            this.setState({
+                office: {
+                    ...this.state.office,
+                    date: moment(e).format("DD-MM-YYYY")
+                }
+            })
+        }
+        else {
+            let newValues = { ...this.state.office }
+            newValues[e.target.name] = e.target.value
+            this.setState({
+                office: {
+                    ...newValues,
+                    id: id
+                }
+            })
+        }
+
     }
 
     onChangeView = (value) => {
         this.props.history.push(`/office/${value}`)
     }
 
-    onClickResetData = () => {
+    onClickResetData = async () => {
         let { dispatch } = this.props
-        dispatch(resetCompanies())
+        let execute = await ConfirmHandling().then(res => res ? true : false)
+
+        if (execute) {
+            dispatch(resetCompanies())
+        }
     }
 
     postData = async (value) => {
         let { dispatch } = this.props
-        let execute = await ConfirmHandling({ todo: this.coba }).then(res => res.isConfirmed)
 
         switch (value) {
             case "company":
-                if (this.validatorCompany.allValid() && execute) {
-                    let newCompany = [...this.props.companies, { ...this.state.company }]
-                    dispatch(storeCompanies(newCompany))
-                    this.onCleanState(value)
+                if (this.validatorCompany.allValid()) {
+                    let execute = await ConfirmHandling().then(res => res ? true : false)
+                    if (execute) {
+                        let newCompany = [...this.props.companies, { ...this.state.company }]
+                        dispatch(storeCompanies(newCompany))
+                        this.onCleanState(value)
+                    }
                 }
                 else {
                     this.validatorCompany.showMessages()
@@ -110,12 +129,15 @@ class Overview extends PureComponent {
                 break;
 
             case "office":
-                if (this.validatorOffice.allValid() && execute) {
-                    let copy = [...this.props.companies]
-                    let company = copy.find(val => val.name == this.state.office.company)
-                    company.offices.push({ ...this.state.office })
-                    dispatch(storeCompanies(copy))
-                    this.onCleanState(value)
+                if (this.validatorOffice.allValid()) {
+                    let execute = await ConfirmHandling().then(res => res ? true : false)
+                    if (execute) {
+                        let copy = [...this.props.companies]
+                        let company = copy.find(val => val.name == this.state.office.company)
+                        company.offices.push({ ...this.state.office })
+                        dispatch(storeCompanies(copy))
+                        this.onCleanState(value)
+                    }
                 }
                 else {
                     this.validatorOffice.showMessages()
@@ -129,7 +151,7 @@ class Overview extends PureComponent {
     }
 
     deleteCompany = async (id) => {
-        let execute = await ConfirmHandling().then(res => res.isConfirmed)
+        let execute = await ConfirmHandling().then(res => res ? true : false)
 
         if (execute) {
             let { dispatch } = this.props
@@ -150,7 +172,7 @@ class Overview extends PureComponent {
         return (
             <div>
                 <div className="d-flex justify-content-center">
-                    <Card className="overview-card">
+                    <Card className="overview-card margin-all">
                         <CardHeader className="overview-card-header d-flex justify-content-between">Create Company <Button onClick={this.onClickResetData}><i class="bi bi-trash"></i> Delete</Button></CardHeader>
                         <CardGroup className="overview-card-group">
                             <Form className="w-100">
@@ -159,9 +181,8 @@ class Overview extends PureComponent {
                                 <CustomInput onChange={this.onChangeCompany} validator={companyOk.message('revenue', company.revenue, 'required')} value={company.revenue} name="revenue" label="Revenue :" placeholder="enter your revenue here" />
                                 <FormGroup className="mb-3">
                                     <FormLabel>Phone No. :</FormLabel>
-                                    <div className="d-flex">
-                                        <FormControl onChange={this.onChangeCompany} value={company.code} name="code" placeholder="code" className="w-25 margin-right" type="text" />
-                                        {companyOk.message('code', company.code, 'required')}
+                                    <div className="d-flex justify-content-start w-100">
+                                        <CustomInput onChange={this.onChangeCompany} validator={companyOk.message('code', company.code, 'required')} name="code" placeholder="code" type="select" options={PHONE_CODE.countries} optionvariable="code" optionvariable2="name" placeholder="code" />
                                         <FormControl onChange={this.onChangeCompany} value={company.phone} name="phone" placeholder="number" className="w-75 margin-left" type="text" />
                                         {companyOk.message('phone', company.phone, 'required')}
                                     </div>
@@ -170,7 +191,7 @@ class Overview extends PureComponent {
                             </Form>
                         </CardGroup>
                     </Card>
-                    <Card className="overview-card">
+                    <Card className="overview-card margin-all">
                         <CardHeader className="overview-card-header">Create Office</CardHeader>
                         <CardGroup className="overview-card-group">
                             <Form className="w-100">
@@ -185,10 +206,15 @@ class Overview extends PureComponent {
                                     </div>
                                 </FormGroup>
                                 <div className="d-flex">
-                                    <CustomInput label="Office Start Date :" placeholder="enter your date here" />
-                                    <DatePicker />
+                                    <CustomInput onChange={this.onChangeOffice} validator={officeOk.message('date', office.date, 'required|max:10')} value={office.date} name="date" label="Office Start Date :" placeholder="enter your date here" />
+                                    <DatePicker onChange={(e) => this.onChangeOffice(e, "Date")} customInput={<Button style={{ marginTop: '33px', marginLeft: '5px' }}><i class="bi bi-calendar-week"></i></Button>} />
                                 </div>
-                                <CustomInput onChange={this.onChangeOffice} validator={officeOk.message('company', office.company, 'required')} name="company" label="Company :" placeholder="select your company name here" type="select" options={companies} optionvariable="name" />
+                                <FormGroup className="mb-3">
+                                    <FormLabel>Company :</FormLabel>
+                                    <div>
+                                        <CustomInput onChange={this.onChangeOffice} validator={officeOk.message('company', office.company, 'required')} name="company" placeholder="select your company name here" type="select" options={companies} optionvariable="name" />
+                                    </div>
+                                </FormGroup>
                                 <Button onClick={() => this.postData("office")} className="w-100"><i class="bi bi-pencil-square"></i> Create</Button>
                             </Form>
                         </CardGroup>
