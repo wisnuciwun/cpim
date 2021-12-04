@@ -7,10 +7,15 @@ import { connect } from 'react-redux';
 import './style.sass'
 import { COMPANIES } from '../../config/redux/actionTypes'
 import MiniCard from '../../components/MiniCard/MiniCard'
+import DatePicker from 'react-datepicker'
+import SimpleReactValidator from 'simple-react-validator';
+import ValidatorText from '../../components/ValidatorText/ValidatorText'
 
 class Overview extends PureComponent {
     constructor(props) {
         super(props)
+        this.validatorCompany = new SimpleReactValidator({element: () => <ValidatorText/>})
+        this.validatorOffice = new SimpleReactValidator({element: () => <ValidatorText/>})
         this.state = {
             company: {
                 id: '',
@@ -80,29 +85,54 @@ class Overview extends PureComponent {
         })
     }
 
+    onChangeView = () => {
+
+        this.props.history.push('/office')
+    }
+
     postData(value) {
     let { dispatch } = this.props
 
         switch (value) {
             case "company":
-            let newCompany = [...this.props.companies, { ...this.state.company }]
-            dispatch(storeCompanies(newCompany))
+            if(this.validatorCompany.allValid()){
+                // let newCompany = [...this.props.companies, { ...this.state.company }]
+                // dispatch(storeCompanies(newCompany))
+                // this.onCleanState(value)
+            }
+            else
+            {
+                this.validatorCompany.showMessages()
+                this.forceUpdate()
+            }
             break;
             
             case "office":
-            let newOffice = [...this.props.offices, { ...this.state.office }]
-            dispatch(storeOffices(newOffice))
+            if(this.validatorOffice.allValid()){
+                // let newOffice = [...this.props.offices, { ...this.state.office }]
+                // dispatch(storeOffices(newOffice))
+                // this.onCleanState(value)
+            }
+            else
+            {
+                this.validatorOffice.showMessages()
+                this.forceUpdate()
+            }
             break;
 
             default:
                 break;
         }
-        this.onCleanState(value)
+        
     }
 
     render() {
         let { company, office } = this.state
         let { companies } = this.props
+        let companyOk = this.validatorCompany
+        let officeOk = this.validatorOffice
+
+        console.log("object", this.props.history)
         return (
             <div>
                 <div className="d-flex justify-content-center">
@@ -110,17 +140,19 @@ class Overview extends PureComponent {
                         <CardHeader className="overview-card-header">Create Company</CardHeader>
                         <CardGroup className="overview-card-group">
                             <Form className="w-100">
-                                <CustomInput onChange={this.onChangeCompany} value={company.name} name="name" label="Name :" placeholder="enter your name here" />
-                                <CustomInput onChange={this.onChangeCompany} value={company.address} name="address" label="Address :" placeholder="enter your address here" />
-                                <CustomInput onChange={this.onChangeCompany} value={company.revenue} name="revenue" label="Revenue :" placeholder="enter your revenue here" />
+                                <CustomInput onChange={this.onChangeCompany} validator={companyOk.message('name', company.name, 'required')} value={company.name} name="name" label="Name :" placeholder="enter your name here" />
+                                <CustomInput onChange={this.onChangeCompany} validator={companyOk.message('address', company.address, 'required')} value={company.address} name="address" label="Address :" placeholder="enter your address here" />
+                                <CustomInput onChange={this.onChangeCompany} validator={companyOk.message('revenue', company.revenue, 'required')} value={company.revenue} name="revenue" label="Revenue :" placeholder="enter your revenue here" />
                                 <FormGroup className="mb-3">
                                     <FormLabel>Phone No. :</FormLabel>
                                     <div className="d-flex">
                                         <FormControl onChange={this.onChangeCompany} value={company.code} name="code" placeholder="code" className="w-25 margin-right" type="text" />
+                                        {companyOk.message('code', company.code, 'required')}
                                         <FormControl onChange={this.onChangeCompany} value={company.phone} name="phone" placeholder="number" className="w-75 margin-left" type="text" />
+                                        {companyOk.message('phone', company.phone, 'required')}
                                     </div>
                                 </FormGroup>
-                                <Button onClick={(e) => this.postData("company")} className="w-100">Create</Button>
+                                <Button onClick={() => this.postData("company")} className="w-100">Create</Button>
                             </Form>
                         </CardGroup>
                     </Card>
@@ -128,16 +160,19 @@ class Overview extends PureComponent {
                         <CardHeader className="overview-card-header">Create Office</CardHeader>
                         <CardGroup className="overview-card-group">
                             <Form className="w-100">
-                                <CustomInput onChange={this.onChangeOffice} value={office.name} name="name" label="Name :" placeholder="enter your name here" />
+                                <CustomInput onChange={this.onChangeOffice} validator={officeOk.message('name', office.name, 'required')} value={office.name} name="name" label="Name :" placeholder="enter your name here" />
                                 <FormGroup className="mb-3">
                                     <FormLabel>Location :</FormLabel>
                                     <div className="d-flex">
                                         <FormControl onChange={this.onChangeOffice} value={office.lat} name="lat" placeholder="latitude" className="w-50 margin-right" type="text" />
+                                        {officeOk.message('lat', office.lat, 'required')}
                                         <FormControl onChange={this.onChangeOffice} value={office.long} name="long" placeholder="longitude" className="w-50 margin-left" type="text" />
+                                        {officeOk.message('long', office.long, 'required')}
                                     </div>
                                 </FormGroup>
-                                <CustomInput label="Office Start Date :" placeholder="enter your date here" />
-                                <CustomInput onChange={this.onChangeOffice} name="company" label="Company :" placeholder="select your company name here" type="select" options={companies} optionvariable="name" optionvalue="companyId" />
+                                <DatePicker  />
+              
+                                <CustomInput onChange={this.onChangeOffice} validator={officeOk.message('company', office.company, 'required')} name="company" label="Company :" placeholder="select your company name here" type="select" options={companies} optionvariable="name" optionvalue="companyId" />
                                 <Button onClick={() => this.postData("office")} className="w-100">Create</Button>
                             </Form>
                         </CardGroup>
@@ -147,7 +182,7 @@ class Overview extends PureComponent {
                     {
                         companies ?
                             companies.map((val, index) => {
-                                return (<MiniCard key={index} iteration={3} datavalue={[val.address, val.revenue, val.phone]} datalabel={["Address :", "Revenue :", "Phone No. :"]} label={val.name} />)
+                                return (<MiniCard changeView={this.onChangeView} key={index} iteration={3} datavalue={[val.address, val.revenue, val.phone]} datalabel={["Address :", "Revenue :", "Phone No. :"]} label={val.name} />)
                             })
                             :
                             null

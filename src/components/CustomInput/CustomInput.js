@@ -2,7 +2,7 @@ import React from 'react'
 import { memo } from 'react'
 import { Form, FormControl, FormGroup, FormLabel } from 'react-bootstrap'
 
-function CustomInput({ label = '', placeholder = '', type = 'text', options = [], onChange, onClick, name = '', value = '', optionvariable = '' }) {
+function CustomInput({ label = '', placeholder = '', type = 'text', options = [], onChange, onClick, name = '', value = '', optionvariable = '', validator = "" }) {
     switch (type) {
         case "select":
             return (<FormGroup className="mb-3">
@@ -22,6 +22,7 @@ function CustomInput({ label = '', placeholder = '', type = 'text', options = []
                         }
                     </select>
                 </div>
+                {validator}
             </FormGroup>)
 
         case "text":
@@ -29,6 +30,7 @@ function CustomInput({ label = '', placeholder = '', type = 'text', options = []
                 <FormGroup className="mb-3">
                     <FormLabel>{label}</FormLabel>
                     <FormControl className="w-100" type={type} placeholder={placeholder} onChange={onChange} name={name} value={value} />
+                    {validator}
                 </FormGroup>
             )
 

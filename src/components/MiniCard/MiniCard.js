@@ -3,7 +3,7 @@ import { Card, CardGroup, FormLabel } from 'react-bootstrap'
 import CardHeader from 'react-bootstrap/esm/CardHeader'
 import './style.sass'
 
-function MiniCard({ label = '', datalabel = [], datavalue = [], iteration = 0, key = 0 }) {
+function MiniCard({ label = '', datalabel = [], datavalue = [], iteration = 0, key = 0, changeView }) {
     let list = []
 
     if (datalabel.length == iteration && datavalue.length == iteration) {
@@ -18,7 +18,7 @@ function MiniCard({ label = '', datalabel = [], datavalue = [], iteration = 0, k
     }
 
     return (
-        <Card key={key} className="w-25 mini-card">
+        <Card onClick={changeView} key={key} className="w-25 mini-card">
             <CardHeader className="d-flex justify-content-between">{label} <i class="bi bi-x-lg pointer"></i></CardHeader>
             <CardGroup className="p-3">
                 <FormLabel>
