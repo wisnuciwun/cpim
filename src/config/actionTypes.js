@@ -1,1 +1,0 @@
-export const USER_LOGGED_DATA = 'USER_LOGGED_DATA';

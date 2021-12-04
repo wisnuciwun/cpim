@@ -7,10 +7,14 @@ const initialState = {
 
 const rootReducer = (state = initialState, action) => {
     switch (action.type) {
+        case actionTypes.COMPANIES:
+            return {
+                ...state,
+                companies: action.data
+            }
 
-
-    default:
-        return state;
+        default:
+            return state;
     }
 }
 

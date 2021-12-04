@@ -1,9 +1,9 @@
-import React from 'react';
-
-const Overview = React.lazy(() => import('./pages/Overview/Overview'))
+import Overview from './pages/Overview/Overview';
+import Offices from './pages/Offices/Offices';
 
 const routes = [
-    {path: '/home', exact: true, name: 'overview', component: Overview}
+    {path: '/home', component: Overview},
+    {path: '/offices', component: Offices}
 ]
 
 export default routes

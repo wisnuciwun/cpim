@@ -2,6 +2,7 @@ import React, { Component, PureComponent } from 'react'
 import { Card, CardGroup, Container, Form, Button, FormControl, FormLabel, FormGroup } from 'react-bootstrap'
 import CardHeader from 'react-bootstrap/esm/CardHeader'
 import CustomInput from '../../components/CustomInput/CustomInput'
+import { storeCompanies } from '../../config/redux/rootAction'
 import './style.sass'
 
 class Overview extends PureComponent {
@@ -25,7 +26,12 @@ class Overview extends PureComponent {
                 company: '',
             }
         }
+
+        this.postData = this.postData.bind(this)
+
+
     }
+
 
     onChangeCompany = (e) => {
         let newValues = {...this.state.company}
@@ -45,9 +51,22 @@ class Overview extends PureComponent {
         })
     }
 
+    postData(value){
+        let { dispatch } = this.props
+
+        switch (value) {
+            case "company":
+                dispatch(storeCompanies({...this.state.company}))
+                break;
+        
+            default:
+                break;
+        }
+    }
+
     render() {
         let { company, office } = this.state
-        console.log("object", this.state)
+        console.log("prop", this.props)
         return (
             <Container>
                 <div className="d-flex justify-content-center">
@@ -65,7 +84,7 @@ class Overview extends PureComponent {
                                         <FormControl onChange={this.onChangeCompany} value={company.phone} name="phone" placeholder="number" className="w-75 margin-left" type="text" />
                                     </div>
                                 </FormGroup>
-                                <Button className="w-100 btn-secondary">Create</Button>
+                                <Button onClick={() => this.postData("company")} className="w-100">Create</Button>
                             </Form>
                         </CardGroup>
                     </Card>
@@ -83,7 +102,7 @@ class Overview extends PureComponent {
                                 </FormGroup>
                                 <CustomInput label="Office Start Date :" placeholder="enter your date here" />
                                 <CustomInput onChange={this.onChangeOffice} value={office.company} name="company" label="Company :" placeholder="select your company name here" type="select" options={this.state.dataopt} />
-                                <Button className="w-100 btn-secondary">Create</Button>
+                                <Button className="w-100">Create</Button>
                             </Form>
                         </CardGroup>
                     </Card>

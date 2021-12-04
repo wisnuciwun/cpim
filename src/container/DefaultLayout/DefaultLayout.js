@@ -7,19 +7,17 @@ import routes from '../../routes'
 export default class DefaultLayout extends Component {
     render() {
         return (
-            <div>
+            <div className="container-full">
                 <Container>
-                    <Overview/>
-                    {/* <Routes>
+                    <Routes>
                         {
                             routes.map((route, index) => {
                                 return (
-                                    <Route key={index} path={route.path} exact={route.exact} name={route.name} component={props => (<route.component {...props} />)} />
+                                    <React.Fragment key={index} path={route.path} element={<route.component />} />
                                 )
                             })
                         }
-                        <Navigate from="/" to="/home" />
-                    </Routes> */}
+                    </Routes>
                 </Container>
             </div>
         )
