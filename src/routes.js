@@ -3,7 +3,7 @@ import Offices from './pages/Offices/Offices';
 
 const routes = [
     {path: '/', component: Overview},
-    {path: '/offices', component: Offices}
+    {path: '/office/:company', component: Offices}
 ]
 
 export default routes

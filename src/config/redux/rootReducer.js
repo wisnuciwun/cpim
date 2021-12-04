@@ -9,20 +9,20 @@ const initialState = {
 
 const rootReducer = (state = initialState, action) => {
     switch (action.type) {
+
         case actionTypes.COMPANIES:
             return {
                 ...state,
                 companies: action.data,
-                companyId: ++state.companyId
-            }
-            
-        case actionTypes.OFFICES:
-            return {
-                ...state,
-                offices: action.data,
+                companyId: ++state.companyId,
                 officeId: ++state.officeId
             }
 
+        case actionTypes.RESET_COMPANIES:
+            return {
+                ...initialState,
+            }
+        
         default:
             return state;
     }

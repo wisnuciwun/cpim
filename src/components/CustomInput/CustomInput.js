@@ -8,7 +8,7 @@ function CustomInput({ label = '', placeholder = '', type = 'text', options = []
             return (<FormGroup className="mb-3">
                 <FormLabel>{label}</FormLabel>
                 <div className="d-flex">
-                    <select onChange={onChange} name="companyId" className="form-control w-100" type="select">
+                    <select onChange={onChange} name={name} className="form-control w-100" type="select">
                     <option defaultValue onClick={onClick} ></option>
                         {
                             options ?

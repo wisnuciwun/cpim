@@ -1,2 +1,2 @@
 export const COMPANIES = 'COMPANIES';
-export const OFFICES = 'OFFICES';
+export const RESET_COMPANIES = 'RESET_COMPANIES';

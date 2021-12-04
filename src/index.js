@@ -8,6 +8,7 @@ import { PersistGate } from 'redux-persist/integration/react';
 import { persistor, store } from './config/redux/persistConfig';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.sass'
+import "react-datepicker/dist/react-datepicker.css";
 
 ReactDOM.hydrate(
   <React.StrictMode>
@@ -16,7 +17,9 @@ ReactDOM.hydrate(
           <App />
         </PersistGate>
     </Provider>
-  </React.StrictMode>,
+  </React.StrictMode>
+  
+  ,
   document.getElementById('root')
 );
 

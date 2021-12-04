@@ -7,9 +7,9 @@ export const storeCompanies = (data) => {
     }
 }
 
-export const storeOffices = (data) => {
+export const resetCompanies = (data) => {
     return{
-        type: actionTypes.OFFICES,
+        type: actionTypes.RESET_COMPANIES,
         data: data
     }
 }
