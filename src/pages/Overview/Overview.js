@@ -3,22 +3,27 @@ import { Card, CardGroup, Container, Form, Button, FormControl, FormLabel, FormG
 import CardHeader from 'react-bootstrap/esm/CardHeader'
 import CustomInput from '../../components/CustomInput/CustomInput'
 import { storeCompanies } from '../../config/redux/rootAction'
+import { connect } from 'react-redux';
 import './style.sass'
+import { COMPANIES } from '../../config/redux/actionTypes'
+import MiniCard from '../../components/MiniCard/MiniCard'
 
 class Overview extends PureComponent {
     constructor(props) {
         super(props)
-    
+
         this.state = {
-             dataopt: [1,2,3],
-             company: {
-                 name: '',
-                 address: '',
-                 revenue: '',
-                 code: '',
-                 phone: ''
-             },
-             office: {
+            dataopt: [1, 2, 3],
+            company: {
+                id: '',
+                name: '',
+                address: '',
+                revenue: '',
+                code: '',
+                phone: ''
+            },
+            office: {
+                id: '',
                 name: '',
                 lat: '',
                 long: '',
@@ -34,16 +39,20 @@ class Overview extends PureComponent {
 
 
     onChangeCompany = (e) => {
-        let newValues = {...this.state.company}
+        let newValues = { ...this.state.company }
+        let id = this.props.companyId
         newValues[e.target.name] = e.target.value
 
         this.setState({
-            company: newValues
+            company: {
+                ...newValues,
+                id: id
+            }
         })
     }
 
     onChangeOffice = (e) => {
-        let newValues = {...this.state.office}
+        let newValues = { ...this.state.office }
         newValues[e.target.name] = e.target.value
 
         this.setState({
@@ -51,24 +60,19 @@ class Overview extends PureComponent {
         })
     }
 
-    postData(value){
+    postData(value) {
         let { dispatch } = this.props
-
-        switch (value) {
-            case "company":
-                dispatch(storeCompanies({...this.state.company}))
-                break;
-        
-            default:
-                break;
-        }
+        // let newValues = []
+        let newValues = [...this.props.companies, { ...this.state.company }]
+        dispatch(storeCompanies(newValues))
     }
 
     render() {
         let { company, office } = this.state
-        console.log("prop", this.props)
+        let { companies } = this.props
+        console.log("props", this.props.location)
         return (
-            <Container>
+            <div>
                 <div className="d-flex justify-content-center">
                     <Card className="overview-card">
                         <CardHeader className="overview-card-header">Create Company</CardHeader>
@@ -107,19 +111,23 @@ class Overview extends PureComponent {
                         </CardGroup>
                     </Card>
                 </div>
-                <div>
-                    <Card className="w-25 overview-card">
-                        <CardHeader className="d-flex justify-content-between pointer">Google <i class="bi bi-x-lg"></i></CardHeader>
-                        <CardGroup>
-                            Address: 
-                            Revenue:
-                            Phone No:
-                        </CardGroup>
-                    </Card>
+                <div className="d-flex h-50 w-100">
+                    {
+                        companies ?
+                            companies.map((val, index) => {
+                                return (<MiniCard data={val} label={val.name} />)
+                            })
+                            :
+                            null
+                    }
                 </div>
-            </Container>
+            </div>
         )
     }
 }
 
-export default Overview
+const mapStateToProps = (state) => {
+    return state
+}
+
+export default connect(mapStateToProps)(Overview)
