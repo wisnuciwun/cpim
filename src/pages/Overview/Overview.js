@@ -99,13 +99,13 @@ class Overview extends PureComponent {
 
     }
 
-    onChangeView = (name,id) => {
+    onChangeView = (name, id) => {
         ChangeView(`/office/${name}/${id}`, this.props)
     }
 
     onClickResetData = async () => {
         let { dispatch } = this.props
-        let execute = await ConfirmHandling().then(res => res ? true : false)
+        let execute = await ConfirmHandling('Are you sure ? You will delete all data').then(res => res ? true : false)
 
         if (execute) {
             dispatch(resetCompanies())
@@ -174,9 +174,9 @@ class Overview extends PureComponent {
 
         return (
             <div>
-                <div className="d-flex justify-content-center">
+                <div className="d-flex justify-content-center up">
                     <Card className="overview-card margin-all">
-                        <CardHeader className="overview-card-header d-flex justify-content-between">Create Company <Button onClick={this.onClickResetData}><i class="bi bi-trash"></i> Delete</Button></CardHeader>
+                        <CardHeader className="overview-card-header d-flex justify-content-between"><i class="bi bi-building"></i> Create Company</CardHeader>
                         <CardGroup className="overview-card-group">
                             <Form className="w-100">
                                 <CustomInput onChange={this.onChangeCompany} validator={companyOk.message('name', company.name, 'required')} value={company.name} name="name" label="Name :" placeholder="enter your name here" />
@@ -197,19 +197,19 @@ class Overview extends PureComponent {
                         </CardGroup>
                     </Card>
                     <Card className="overview-card margin-all">
-                        <CardHeader className="overview-card-header">Create Office</CardHeader>
+                        <CardHeader className="overview-card-header d-flex justify-content-between"><i class="bi bi-shop-window"></i> Create Office</CardHeader>
                         <CardGroup className="overview-card-group">
                             <Form className="w-100">
                                 <CustomInput onChange={this.onChangeOffice} validator={officeOk.message('name', office.name, 'required')} value={office.name} name="name" label="Name :" placeholder="enter your name here" />
                                 <FormGroup className="mb-3">
                                     <FormLabel>Location :</FormLabel>
                                     <div className="d-flex">
-                                        <span className="w-100">
-                                            <FormControl onChange={this.onChangeOffice} value={office.lat} name="lat" placeholder="latitude" className=" margin-right" type="text" />
+                                        <span className="w-100 margin-right">
+                                            <FormControl onChange={this.onChangeOffice} value={office.lat} name="lat" placeholder="latitude" type="text" />
                                             {officeOk.message('lat', office.lat, 'required')}
                                         </span>
-                                        <span className="w-100">
-                                            <FormControl onChange={this.onChangeOffice} value={office.long} name="long" placeholder="longitude" className=" margin-left" type="text" />
+                                        <span className="w-100 margin-right">
+                                            <FormControl onChange={this.onChangeOffice} value={office.long} name="long" placeholder="longitude" className="margin-left" type="text" />
                                             {officeOk.message('long', office.long, 'required')}
                                         </span>
                                     </div>
@@ -221,7 +221,9 @@ class Overview extends PureComponent {
                                             <FormControl disabled value={office.date} name="date" placeholder="choose date on side button" type="text" />
                                             {officeOk.message('date', office.date, 'required')}
                                         </span>
-                                        <DatePicker onChange={(e) => this.onChangeOffice(e, "Date")}  popperPlacement="auto" customInput={<Button className="w-25" ><i class="bi bi-calendar-week"></i></Button>} />
+                                        <span>
+                                            <DatePicker onChange={(e) => this.onChangeOffice(e, "Date")} popperPlacement="auto" customInput={<Button><i class="bi bi-calendar-week"></i></Button>} />
+                                        </span>
                                     </div>
                                 </FormGroup>
                                 <FormGroup className="mb-3 ">
@@ -245,6 +247,9 @@ class Overview extends PureComponent {
                             :
                             null
                     }
+                </div>
+                <div className="d-flex justify-content-end mt-5">
+                    <Button className="floating-button" onClick={this.onClickResetData}><i class="bi bi-trash"></i></Button>
                 </div>
             </div>
         )

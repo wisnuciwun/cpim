@@ -21,7 +21,7 @@ function MiniCard({ label = '', datalabel = [], datavalue = [], iteration = 0, i
         <Card key={idData} className="w-25 mini-card margin-left margin-right">
             <CardHeader className="d-flex justify-content-between">{label} <i onClick={() => onClickDelete(idData)} className="close bi bi-x-lg pointer"></i></CardHeader>
             <CardGroup onClick={() => changeView(label,idData)} className="p-3 pointer">
-                <FormLabel>
+                <FormLabel className="pointer" onClick={() => changeView(label,idData)}>
                     {list}
                 </FormLabel>
             </CardGroup>

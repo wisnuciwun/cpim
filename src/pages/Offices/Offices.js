@@ -52,13 +52,13 @@ class Offices extends PureComponent {
                         <div>
                             <div className="d-flex justify-content-between align-items-end">
                                 <span>
-                                    <h3>Company Name</h3>
+                                    <h4>Company Name</h4>
                                     <p>{company.name ? company.name : ""}</p>
-                                    <h3>Address</h3>
+                                    <h4>Address</h4>
                                     <p>{company.address ? company.address : ""}</p>
-                                    <h3>Revenue</h3>
+                                    <h4>Revenue</h4>
                                     <p>{company.revenue ? company.revenue : ""}</p>
-                                    <h3>Phone Number</h3>
+                                    <h4>Phone Number</h4>
                                     <p>{company.phone ? company.phone : ""}</p>
                                 </span>
                                 <div>
