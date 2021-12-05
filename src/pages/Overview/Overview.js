@@ -218,10 +218,10 @@ class Overview extends PureComponent {
                                     <FormLabel>Office Start Date :</FormLabel>
                                     <div className="d-flex justify-content-start w-100">
                                         <span className="margin-right w-100">
-                                            <FormControl value={office.date} name="date" placeholder="enter your date here" type="text" />
+                                            <FormControl disabled value={office.date} name="date" placeholder="choose date on side button" type="text" />
                                             {officeOk.message('date', office.date, 'required')}
                                         </span>
-                                        <DatePicker onChange={(e) => this.onChangeOffice(e, "Date")} customInput={<Button className="w-25" ><i class="bi bi-calendar-week"></i></Button>} />
+                                        <DatePicker onChange={(e) => this.onChangeOffice(e, "Date")}  popperPlacement="auto" customInput={<Button className="w-25" ><i class="bi bi-calendar-week"></i></Button>} />
                                     </div>
                                 </FormGroup>
                                 <FormGroup className="mb-3 ">

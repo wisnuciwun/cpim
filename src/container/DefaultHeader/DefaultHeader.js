@@ -7,10 +7,7 @@ class DefaultHeader extends Component {
     render() {
         return (
             <div className="header">
-                <div className="d-flex justify-content-between">
-                    <h1>{this.props.pagename} page</h1>
-                    <h4><img src={ico} style={{width: '50px', height: '50px'}}/>&nbsp;<i>CompaControl</i></h4>
-                </div>
+                <h1>{this.props.pagename} page</h1>
                 <hr></hr>
             </div>
         )

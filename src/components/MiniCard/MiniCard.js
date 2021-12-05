@@ -10,7 +10,7 @@ function MiniCard({ label = '', datalabel = [], datavalue = [], iteration = 0, k
         for (let i = 0; i < datavalue.length; i++) {
             list.push(
                 <span key={i}>
-                    <h4>{datalabel[i]}</h4>
+                    <h5>{datalabel[i]}</h5>
                     <p>{datavalue[i]}</p>
                 </span>
             )
@@ -18,9 +18,9 @@ function MiniCard({ label = '', datalabel = [], datavalue = [], iteration = 0, k
     }
 
     return (
-        <Card onClick={() => changeView(label)} key={key} className="w-25 mini-card pointer margin-left margin-right">
+        <Card key={key} className="w-25 mini-card margin-left margin-right">
             <CardHeader className="d-flex justify-content-between">{label} <i onClick={() => onClickDelete(key)} className="close bi bi-x-lg pointer"></i></CardHeader>
-            <CardGroup className="p-3">
+            <CardGroup onClick={() => changeView(label)} className="p-3 pointer">
                 <FormLabel>
                     {list}
                 </FormLabel>
