@@ -171,7 +171,6 @@ class Overview extends PureComponent {
         let { companies } = this.props
         let companyOk = this.validatorCompany
         let officeOk = this.validatorOffice
-        console.log("object", this.props)
 
         return (
             <div>
