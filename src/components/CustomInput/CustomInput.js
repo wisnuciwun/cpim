@@ -12,7 +12,7 @@ function CustomInput({ label = '', placeholder = '', type = 'text', options = []
                             options ?
                                 options.map((v, index) => {
                                     return (
-                                        <option key={index} >{v[optionvariable]}&nbsp;-&nbsp;{v[optionvariable2]}</option>
+                                        <option key={index}>{v[optionvariable]}</option>
                                     )
                                 })
                                 :

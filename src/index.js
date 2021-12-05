@@ -9,16 +9,19 @@ import { persistor, store } from './config/redux/persistConfig';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.sass'
 import "react-datepicker/dist/react-datepicker.css";
+import { BrowserRouter } from 'react-router-dom';
 
 ReactDOM.hydrate(
   <React.StrictMode>
+    <BrowserRouter>
       <Provider store={store}>
         <PersistGate persistor={persistor}>
           <App />
         </PersistGate>
-    </Provider>
+      </Provider>
+    </BrowserRouter>
   </React.StrictMode>
-  
+
   ,
   document.getElementById('root')
 );

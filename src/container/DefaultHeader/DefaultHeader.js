@@ -6,6 +6,7 @@ export default class DefaultHeader extends Component {
         return (
             <div className="header">
                 <h1>Overview page</h1>
+                <hr></hr>
             </div>
         )
     }

@@ -18,8 +18,8 @@ function MiniCard({ label = '', datalabel = [], datavalue = [], iteration = 0, k
     }
 
     return (
-        <Card onClick={() => changeView(label)} key={key} className="w-25 mini-card">
-            <CardHeader className="d-flex justify-content-between">{label} <i onClick={() => onClickDelete(key)} className="bi bi-x-lg pointer"></i></CardHeader>
+        <Card onClick={() => changeView(label)} key={key} className="w-25 mini-card pointer margin-left margin-right">
+            <CardHeader className="d-flex justify-content-between">{label} <i onClick={() => onClickDelete(key)} className="close bi bi-x-lg pointer"></i></CardHeader>
             <CardGroup className="p-3">
                 <FormLabel>
                     {list}

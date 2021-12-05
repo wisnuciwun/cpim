@@ -12,6 +12,7 @@ import ValidatorText from '../../components/ValidatorText/ValidatorText'
 import { ConfirmHandling, ErrorHandling } from '../../components/Swal/Swal'
 import moment from 'moment'
 import { PHONE_CODE } from '../../constants/Constants'
+import { ChangeView } from '../../helper/ChangeView'
 
 class Overview extends PureComponent {
     constructor(props) {
@@ -97,7 +98,7 @@ class Overview extends PureComponent {
     }
 
     onChangeView = (value) => {
-        this.props.history.push(`/office/${value}`)
+        ChangeView(`/office/${value}`, this.props)
     }
 
     onClickResetData = async () => {
@@ -168,7 +169,6 @@ class Overview extends PureComponent {
         let { companies } = this.props
         let companyOk = this.validatorCompany
         let officeOk = this.validatorOffice
-
         return (
             <div>
                 <div className="d-flex justify-content-center">
@@ -178,13 +178,15 @@ class Overview extends PureComponent {
                             <Form className="w-100">
                                 <CustomInput onChange={this.onChangeCompany} validator={companyOk.message('name', company.name, 'required')} value={company.name} name="name" label="Name :" placeholder="enter your name here" />
                                 <CustomInput onChange={this.onChangeCompany} validator={companyOk.message('address', company.address, 'required')} value={company.address} name="address" label="Address :" placeholder="enter your address here" />
-                                <CustomInput onChange={this.onChangeCompany} validator={companyOk.message('revenue', company.revenue, 'required')} value={company.revenue} name="revenue" label="Revenue :" placeholder="enter your revenue here" />
+                                <CustomInput onChange={this.onChangeCompany} validator={companyOk.message('revenue', company.revenue, 'required|numeric')} value={company.revenue} name="revenue" label="Revenue :" placeholder="enter your revenue here" />
                                 <FormGroup className="mb-3">
                                     <FormLabel>Phone No. :</FormLabel>
                                     <div className="d-flex justify-content-start w-100">
                                         <CustomInput onChange={this.onChangeCompany} validator={companyOk.message('code', company.code, 'required')} name="code" placeholder="code" type="select" options={PHONE_CODE.countries} optionvariable="code" optionvariable2="name" placeholder="code" />
-                                        <FormControl onChange={this.onChangeCompany} value={company.phone} name="phone" placeholder="number" className="w-75 margin-left" type="text" />
-                                        {companyOk.message('phone', company.phone, 'required')}
+                                        <div className="w-100 margin-right">
+                                            <FormControl onChange={this.onChangeCompany} value={company.phone} name="phone" placeholder="number" className="margin-left" type="text" />
+                                            {companyOk.message('phone', company.phone, 'required|numeric|min:0,num')}
+                                        </div>
                                     </div>
                                 </FormGroup>
                                 <Button onClick={() => this.postData("company")} className="w-100"><i class="bi bi-pencil-square"></i> Create</Button>
@@ -199,17 +201,27 @@ class Overview extends PureComponent {
                                 <FormGroup className="mb-3">
                                     <FormLabel>Location :</FormLabel>
                                     <div className="d-flex">
-                                        <FormControl onChange={this.onChangeOffice} value={office.lat} name="lat" placeholder="latitude" className="w-50 margin-right" type="text" />
-                                        {officeOk.message('lat', office.lat, 'required')}
-                                        <FormControl onChange={this.onChangeOffice} value={office.long} name="long" placeholder="longitude" className="w-50 margin-left" type="text" />
-                                        {officeOk.message('long', office.long, 'required')}
+                                        <span className="w-100">
+                                            <FormControl onChange={this.onChangeOffice} value={office.lat} name="lat" placeholder="latitude" className=" margin-right" type="text" />
+                                            {officeOk.message('lat', office.lat, 'required')}
+                                        </span>
+                                        <span className="w-100">
+                                            <FormControl onChange={this.onChangeOffice} value={office.long} name="long" placeholder="longitude" className=" margin-left" type="text" />
+                                            {officeOk.message('long', office.long, 'required')}
+                                        </span>
                                     </div>
                                 </FormGroup>
-                                <div className="d-flex">
-                                    <CustomInput onChange={this.onChangeOffice} validator={officeOk.message('date', office.date, 'required|max:10')} value={office.date} name="date" label="Office Start Date :" placeholder="enter your date here" />
-                                    <DatePicker onChange={(e) => this.onChangeOffice(e, "Date")} customInput={<Button style={{ marginTop: '33px', marginLeft: '5px' }}><i class="bi bi-calendar-week"></i></Button>} />
-                                </div>
                                 <FormGroup className="mb-3">
+                                    <FormLabel>Office Start Date :</FormLabel>
+                                    <div className="d-flex justify-content-start w-100">
+                                        <span className="margin-right w-100">
+                                            <FormControl value={office.date} name="date" placeholder="enter your date here" type="text" />
+                                            {officeOk.message('date', office.date, 'required')}
+                                        </span>
+                                        <DatePicker onChange={(e) => this.onChangeOffice(e, "Date")} customInput={<Button className="w-25" ><i class="bi bi-calendar-week"></i></Button>} />
+                                    </div>
+                                </FormGroup>
+                                <FormGroup className="mb-3 ">
                                     <FormLabel>Company :</FormLabel>
                                     <div>
                                         <CustomInput onChange={this.onChangeOffice} validator={officeOk.message('company', office.company, 'required')} name="company" placeholder="select your company name here" type="select" options={companies} optionvariable="name" />
@@ -220,6 +232,7 @@ class Overview extends PureComponent {
                         </CardGroup>
                     </Card>
                 </div>
+                <hr></hr>
                 <div className="d-flex h-50 w-100">
                     {
                         companies ?

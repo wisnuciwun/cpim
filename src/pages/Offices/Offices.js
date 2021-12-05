@@ -4,10 +4,11 @@ import { connect } from 'react-redux';
 import MiniCard from '../../components/MiniCard/MiniCard';
 import { ConfirmHandling } from '../../components/Swal/Swal';
 import { storeCompanies } from '../../config/redux/rootAction';
+import {ChangeView} from '../../helper/ChangeView';
 import { dummyFunction } from '../../helper/dummyFunction';
 import './style.sass'
 
-class Offices extends Component {
+class Offices extends Component {    
 
     deleteOffice = async (id) => {
         let execute = await ConfirmHandling().then(res => res ? true : false)
@@ -23,9 +24,14 @@ class Offices extends Component {
         }
     }
 
+    onChangeView = () => {
+        ChangeView(`/`, this.props)
+    }
+
     render() {
         let { companies } = this.props
-        let company = companies.find(val => val.id == 84)
+        let companyname = this.props.location.pathname.split('/')[2].replaceAll('%20', " ")
+        let company = companies.find(val => val.name == companyname)
         let selectedOffice = []
 
         if (company) {
@@ -43,7 +49,8 @@ class Offices extends Component {
                             <p>{company.revenue ? company.revenue : ""}</p>
                             <h3>Phone Number</h3>
                             <p>{company.phone ? company.phone : ""}</p>
-                            <Button className="btn-secondary" >Back to Overview</Button>
+                            <Button className="btn-secondary" onClick={this.onChangeView} >Back to Overview</Button>
+                            <hr></hr>
                             <div className="d-flex h-50 w-100">
                                 {
                                     selectedOffice ?
@@ -56,7 +63,10 @@ class Offices extends Component {
                             </div>
                         </div>
                         :
-                        <h1 className="center-all" ><i class="bi bi-door-open"></i> No data</h1>
+                        <div className="center-all" style={{textAlign: 'center'}}>
+                            <h1><i class="bi bi-door-open"></i>No data</h1>
+                            <Button className="btn-secondary" onClick={this.onChangeView}><i class="bi bi-house"></i> Back to Overview</Button>
+                        </div>
                 }
 
             </div>
