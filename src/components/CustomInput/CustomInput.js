@@ -7,12 +7,12 @@ function CustomInput({ label = '', placeholder = '', type = 'text', options = []
         case "select":
             return (<FormGroup>
                     <select onChange={onChange} value={value} name={name} className="form-control  w-100" type="select">
-                    <option defaultValue >{placeholder}</option>
+                    <option defaultValue >{value}</option>
                         {
                             options ?
                                 options.map((v, index) => {
                                     return (
-                                        <option key={index}>{v[optionvariable]}</option>
+                                        <option key={index}>{v[optionvariable2]}: {v[optionvariable]}</option>
                                     )
                                 })
                                 :

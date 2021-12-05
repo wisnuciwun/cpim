@@ -59,7 +59,7 @@ class Offices extends PureComponent {
                                     <h4>Revenue</h4>
                                     <p>{company.revenue ? company.revenue : ""}</p>
                                     <h4>Phone Number</h4>
-                                    <p>{company.phone ? company.phone : ""}</p>
+                                    <p>{company.phone ? `(${company.code}) ${company.phone}` : ""}</p>
                                 </span>
                                 <div>
                                     <Button className="btn-secondary" onClick={this.onChangeView} ><i class="bi bi-house"></i> Back to Overview</Button>

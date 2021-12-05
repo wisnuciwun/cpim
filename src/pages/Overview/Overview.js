@@ -63,16 +63,28 @@ class Overview extends PureComponent {
     }
 
     onChangeCompany = (e) => {
-        let newValues = { ...this.state.company }
         let id = this.props.companyId
-        newValues[e.target.name] = e.target.value
 
-        this.setState({
-            company: {
-                ...newValues,
-                id: id,
-            }
-        })
+        if(e.target.name == "code"){
+            let val = e.target.value.split(': ')[1]
+            this.setState({
+                company: {
+                    ...this.state.company,
+                    code: val
+                }
+            })
+        }
+        else{
+            let newValues = this.state.company
+            newValues[e.target.name] = e.target.value
+    
+            this.setState({
+                company: {
+                    ...newValues,
+                    id: id,
+                }
+            })
+        }
     }
 
     onChangeOffice = (e, v = "") => {
@@ -181,7 +193,7 @@ class Overview extends PureComponent {
                             <Form className="w-100">
                                 <CustomInput onChange={this.onChangeCompany} validator={companyOk.message('name', company.name, 'required')} value={company.name} name="name" label="Name :" placeholder="enter your name here" />
                                 <CustomInput onChange={this.onChangeCompany} validator={companyOk.message('address', company.address, 'required')} value={company.address} name="address" label="Address :" placeholder="enter your address here" />
-                                <CustomInput onChange={this.onChangeCompany} validator={companyOk.message('revenue', company.revenue, 'required|numeric')} value={company.revenue} name="revenue" label="Revenue :" placeholder="enter your revenue here" />
+                                <CustomInput onChange={this.onChangeCompany} validator={companyOk.message('revenue', company.revenue, 'required|numeric|min:0,num')} value={company.revenue} name="revenue" label="Revenue :" placeholder="enter your revenue here" />
                                 <FormGroup className="mb-3">
                                     <FormLabel>Phone No. :</FormLabel>
                                     <div className="d-flex justify-content-start w-100">
@@ -240,12 +252,12 @@ class Overview extends PureComponent {
                 <hr></hr>
                 <div className="flex-components">
                     {
-                        companies ?
+                        companies.length != 0 ?
                             companies.map((val) => {
-                                return (<MiniCard changeView={this.onChangeView} idData={val.id} iteration={3} datavalue={[val.address, val.revenue, val.phone]} datalabel={["Address :", "Revenue :", "Phone No. :"]} label={val.name} onClickDelete={this.deleteCompany} />)
+                                return (<MiniCard changeView={this.onChangeView} idData={val.id} iteration={3} datavalue={[val.address, val.revenue, `(${val.code}) ${val.phone}`]} datalabel={["Address :", "Revenue :", "Phone No. :"]} label={val.name} onClickDelete={this.deleteCompany} />)
                             })
                             :
-                            null
+                            <h3><i class="bi bi-emoji-frown"></i> No company registered</h3>
                     }
                 </div>
                 <div className="d-flex justify-content-end mt-5">
