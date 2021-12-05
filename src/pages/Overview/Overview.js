@@ -2,7 +2,7 @@ import React, { Component, PureComponent } from 'react'
 import { Card, CardGroup, Container, Form, Button, FormControl, FormLabel, FormGroup } from 'react-bootstrap'
 import CardHeader from 'react-bootstrap/esm/CardHeader'
 import CustomInput from '../../components/CustomInput/CustomInput'
-import { resetCompanies, storeCompanies } from '../../config/redux/rootAction'
+import { resetCompanies, setPage, storeCompanies } from '../../config/redux/rootAction'
 import { connect } from 'react-redux';
 import './style.sass'
 import MiniCard from '../../components/MiniCard/MiniCard'
@@ -39,6 +39,8 @@ class Overview extends PureComponent {
             },
         }
         this.initial = { ...this.state }
+        let { dispatch } = this.props
+        dispatch(setPage(this.props.page))
     }
 
     onCleanState = (value) => {
@@ -169,6 +171,8 @@ class Overview extends PureComponent {
         let { companies } = this.props
         let companyOk = this.validatorCompany
         let officeOk = this.validatorOffice
+        console.log("object", this.props)
+
         return (
             <div>
                 <div className="d-flex justify-content-center">
@@ -182,7 +186,7 @@ class Overview extends PureComponent {
                                 <FormGroup className="mb-3">
                                     <FormLabel>Phone No. :</FormLabel>
                                     <div className="d-flex justify-content-start w-100">
-                                        <CustomInput onChange={this.onChangeCompany} validator={companyOk.message('code', company.code, 'required')} name="code" placeholder="code" type="select" options={PHONE_CODE.countries} optionvariable="code" optionvariable2="name" placeholder="code" />
+                                        <CustomInput onChange={this.onChangeCompany} validator={companyOk.message('code', company.code, 'required')} value={company.code} name="code" placeholder="code" type="select" options={PHONE_CODE.countries} optionvariable="code" optionvariable2="name" placeholder="code" />
                                         <div className="w-100 margin-right">
                                             <FormControl onChange={this.onChangeCompany} value={company.phone} name="phone" placeholder="number" className="margin-left" type="text" />
                                             {companyOk.message('phone', company.phone, 'required|numeric|min:0,num')}
@@ -224,7 +228,7 @@ class Overview extends PureComponent {
                                 <FormGroup className="mb-3 ">
                                     <FormLabel>Company :</FormLabel>
                                     <div>
-                                        <CustomInput onChange={this.onChangeOffice} validator={officeOk.message('company', office.company, 'required')} name="company" placeholder="select your company name here" type="select" options={companies} optionvariable="name" />
+                                        <CustomInput onChange={this.onChangeOffice} validator={officeOk.message('company', office.company, 'required')} value={office.company} name="company" placeholder="select your company name here" type="select" options={companies} optionvariable="name" />
                                     </div>
                                 </FormGroup>
                                 <Button onClick={() => this.postData("office")} className="w-100"><i class="bi bi-pencil-square"></i> Create</Button>
@@ -233,7 +237,7 @@ class Overview extends PureComponent {
                     </Card>
                 </div>
                 <hr></hr>
-                <div className="d-flex h-50 w-100">
+                <div className="flex-components">
                     {
                         companies ?
                             companies.map((val) => {

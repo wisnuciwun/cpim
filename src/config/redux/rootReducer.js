@@ -3,8 +3,8 @@ import * as actionTypes from './actionTypes';
 const initialState = {
     companyId: 0,
     officeId: 0,
+    pagename: "",
     companies: [],
-    offices: [],
 }
 
 const rootReducer = (state = initialState, action) => {
@@ -21,6 +21,12 @@ const rootReducer = (state = initialState, action) => {
         case actionTypes.RESET_COMPANIES:
             return {
                 ...initialState,
+            }
+        
+        case actionTypes.PAGE:
+            return {
+                ...state,
+                pagename: action.data
             }
         
         default:

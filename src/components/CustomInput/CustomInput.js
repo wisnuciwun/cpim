@@ -6,8 +6,8 @@ function CustomInput({ label = '', placeholder = '', type = 'text', options = []
     switch (type) {
         case "select":
             return (<FormGroup>
-                    <select onChange={onChange} name={name} className="form-control  w-100" type="select">
-                    <option defaultValue onClick={onClick} >{placeholder}</option>
+                    <select onChange={onChange} value={value} name={name} className="form-control  w-100" type="select">
+                    <option defaultValue >{placeholder}</option>
                         {
                             options ?
                                 options.map((v, index) => {

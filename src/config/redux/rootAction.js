@@ -13,3 +13,10 @@ export const resetCompanies = (data) => {
         data: data
     }
 }
+
+export const setPage = (data) => {
+    return{
+        type: actionTypes.PAGE,
+        data: data
+    }
+}

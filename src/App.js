@@ -1,25 +1,20 @@
-import { BrowserRouter as Router, Routes, Route, useNavigate, useParams } from 'react-router-dom';
+import { Routes, Route, useNavigate, useRoutes } from 'react-router-dom';
 import React from 'react';
 import routes from './routes'
-import { Container } from 'react-bootstrap';
 import DefaultHeader from './container/DefaultHeader/DefaultHeader';
-import { createBrowserHistory } from "history";
-import Loading from './components/Loading';
 import {useLocation} from 'react-router'
 
-function App(props) {
-  const history = createBrowserHistory();
+function App() {
   let navigate = useNavigate()
   let location = useLocation()
-  
   return (
           <div className="container-full">
-            <DefaultHeader/>
+            <DefaultHeader />
             <Routes>
               {
                 routes.map((route, index) => {
                   return (
-                    <Route key={index} path={route.path} element={<route.component location={location} navigate={navigate} history={history} {...props}/>} />
+                    <Route key={index} path={route.path} element={<route.component page={route.name} location={location} navigate={navigate}/>} />
                   )
                 })
               }
