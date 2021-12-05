@@ -18,12 +18,12 @@ class Offices extends PureComponent {
 
     deleteOffice = async (id) => {
         let execute = await ConfirmHandling().then(res => res ? true : false)
-        let companyname = this.props.location.pathname.split('/')[2].replaceAll('%20', " ")
+        let companyid = this.props.location.pathname.split('/')[3]
 
         if (execute) {
             let { dispatch } = this.props
             let copy = [...this.props.companies]
-            let selected = copy.find(val => val.name == companyname)
+            let selected = copy.find(val => val.id == companyid)
             let office = selected.offices.find(value => value.id == id)
             let index = selected.offices.indexOf(office)
             selected.offices.splice(index, 1)
@@ -37,8 +37,8 @@ class Offices extends PureComponent {
 
     render() {
         let { companies } = this.props
-        let companyname = this.props.location.pathname.split('/')[2].replaceAll('%20', " ")
-        let company = companies.find(val => val.name == companyname)
+        let companyid = this.props.location.pathname.split('/')[3]
+        let company = companies.find(val => val.id == companyid)
         let selectedOffice = []
 
         if (company) {
@@ -52,6 +52,8 @@ class Offices extends PureComponent {
                         <div>
                             <div className="d-flex justify-content-between align-items-end">
                                 <span>
+                                    <h3>Company Name</h3>
+                                    <p>{company.name ? company.name : ""}</p>
                                     <h3>Address</h3>
                                     <p>{company.address ? company.address : ""}</p>
                                     <h3>Revenue</h3>

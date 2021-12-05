@@ -99,8 +99,8 @@ class Overview extends PureComponent {
 
     }
 
-    onChangeView = (value) => {
-        ChangeView(`/office/${value}`, this.props)
+    onChangeView = (name,id) => {
+        ChangeView(`/office/${name}/${id}`, this.props)
     }
 
     onClickResetData = async () => {
@@ -240,7 +240,7 @@ class Overview extends PureComponent {
                     {
                         companies ?
                             companies.map((val) => {
-                                return (<MiniCard changeView={this.onChangeView} key={val.id} iteration={3} datavalue={[val.address, val.revenue, val.phone]} datalabel={["Address :", "Revenue :", "Phone No. :"]} label={val.name} onClickDelete={this.deleteCompany} />)
+                                return (<MiniCard changeView={this.onChangeView} idData={val.id} iteration={3} datavalue={[val.address, val.revenue, val.phone]} datalabel={["Address :", "Revenue :", "Phone No. :"]} label={val.name} onClickDelete={this.deleteCompany} />)
                             })
                             :
                             null
