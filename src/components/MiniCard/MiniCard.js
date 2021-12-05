@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { memo } from 'react'
 import { Card, CardGroup, FormLabel } from 'react-bootstrap'
 import CardHeader from 'react-bootstrap/esm/CardHeader'
 import './style.sass'
@@ -29,4 +29,4 @@ function MiniCard({ label = '', datalabel = [], datavalue = [], iteration = 0, k
     )
 }
 
-export default MiniCard
+export default memo(MiniCard)

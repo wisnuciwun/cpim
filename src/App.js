@@ -1,4 +1,4 @@
-import { Routes, Route, useNavigate, useRoutes } from 'react-router-dom';
+import { Routes, Route, useNavigate } from 'react-router-dom';
 import React from 'react';
 import routes from './routes'
 import DefaultHeader from './container/DefaultHeader/DefaultHeader';

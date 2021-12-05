@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import { Button } from 'react-bootstrap'
 import { connect } from 'react-redux';
 import MiniCard from '../../components/MiniCard/MiniCard';
@@ -8,7 +8,7 @@ import { ChangeView } from '../../helper/ChangeView';
 import { dummyFunction } from '../../helper/dummyFunction';
 import './style.sass'
 
-class Offices extends Component {
+class Offices extends PureComponent {
     constructor(props) {
         super(props)
         let { dispatch } = this.props

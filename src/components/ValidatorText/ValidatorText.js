@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { memo } from 'react'
 import { FormLabel } from 'react-bootstrap'
 
 function ValidatorText({text = "Please fill the blank"}) {
@@ -7,4 +7,4 @@ function ValidatorText({text = "Please fill the blank"}) {
     )
 }
 
-export default ValidatorText
+export default memo(ValidatorText)

@@ -1,6 +1,6 @@
 import React from 'react'
 import { memo } from 'react'
-import { Form, FormControl, FormGroup, FormLabel } from 'react-bootstrap'
+import { FormControl, FormGroup, FormLabel } from 'react-bootstrap'
 
 function CustomInput({ label = '', placeholder = '', type = 'text', options = [], onChange, onClick, name = '', value = '', optionvariable = '', validator = "", optionvariable2 = '' }) {
     switch (type) {
