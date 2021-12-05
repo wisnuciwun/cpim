@@ -66,7 +66,7 @@ class Overview extends PureComponent {
         let id = this.props.companyId
 
         if(e.target.name == "code"){
-            let val = e.target.value.split(': ')[1]
+            let val = e.target.value.split('(')[0]
             this.setState({
                 company: {
                     ...this.state.company,
@@ -134,6 +134,7 @@ class Overview extends PureComponent {
                     if (execute) {
                         let newCompany = [...this.props.companies, { ...this.state.company }]
                         dispatch(storeCompanies(newCompany))
+                        this.validatorCompany.hideMessages()
                         this.onCleanState(value)
                     }
                 }
@@ -151,6 +152,7 @@ class Overview extends PureComponent {
                         let company = copy.find(val => val.name == this.state.office.company)
                         company.offices.push({ ...this.state.office })
                         dispatch(storeCompanies(copy))
+                        this.validatorOffice.hideMessages()
                         this.onCleanState(value)
                     }
                 }

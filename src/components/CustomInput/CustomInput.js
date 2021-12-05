@@ -3,6 +3,12 @@ import { memo } from 'react'
 import { FormControl, FormGroup, FormLabel } from 'react-bootstrap'
 
 function CustomInput({ label = '', placeholder = '', type = 'text', options = [], onChange, onClick, name = '', value = '', optionvariable = '', validator = "", optionvariable2 = '' }) {
+    let separator1 = ''
+    let separator2 = '' 
+    if(optionvariable2 != ''){
+        separator1 = ' ('
+        separator2 = ')'
+    }
     switch (type) {
         case "select":
             return (<FormGroup>
@@ -12,7 +18,7 @@ function CustomInput({ label = '', placeholder = '', type = 'text', options = []
                             options ?
                                 options.map((v, index) => {
                                     return (
-                                        <option key={index}>{v[optionvariable2]}: {v[optionvariable]}</option>
+                                        <option key={index}>{v[optionvariable]}{separator1}{v[optionvariable2]}{separator2}</option>
                                     )
                                 })
                                 :
