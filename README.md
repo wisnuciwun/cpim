@@ -38,5 +38,5 @@ Introduce me, CompaControl. App that helps you manage and list your company's br
 
 > ## Bug to improve
 1. UI/UX :)
-2. No issue so far
+2. No backend and database, so data would be erased each time front-end server is restarted
 
