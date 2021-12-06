@@ -13,14 +13,14 @@ Introduce me, CompaControl. App that helps you manage and list your company's br
 
 > ## How to use :
 
-Adding Company
+- ## Adding Company
 1. Simply you just fill up the all empty space in Company Card
 2. Create button wouldn't let you submit until all field complete
 3. Country code is based on real country code
 4. Every field using a validation, so you should fill the correct value
 5. Pop-up always shown each time you submit the new Company
-
-> ## Adding Office
+ 
+ - ## Adding Office
 1. Overall procedure and feature is similiar with Adding Company
 2. Office Start Date is using Date Picker so please click the right-side button to choose any date
 3. Company list is based on your company which you have created before
